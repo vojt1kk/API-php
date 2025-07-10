@@ -19,6 +19,10 @@ return new class extends Migration
             $table->integer('price');
             $table->timestamps();
         });
+
+        Schema::table('categories', function (Blueprint $table) {
+            $table->string('photo')->nullable();
+        });
     }
 
     /**
