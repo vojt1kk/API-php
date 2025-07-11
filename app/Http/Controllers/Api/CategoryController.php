@@ -31,10 +31,10 @@ class CategoryController extends Controller
 
     public function store(StoreCategoryRequest $request) 
     {
-        $category = Category::create($request->validated());
- 
-        if ($request->hasFile('photo')) { 
-            $file = $request->file('photo');
+        $data = $request->validated();
+        $category = Category::create($data);
+        if (isset($data['photo'])) { 
+            $file = $data['photo'];
             $name = 'categories/' . Str::uuid() . '.' . $file->extension();
             $file->storePubliclyAs('public', $name);
             $data['photo'] = $name;
