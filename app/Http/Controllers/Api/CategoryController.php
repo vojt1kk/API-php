@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1; 
 
 
 use App\Models\Category;
@@ -9,19 +9,41 @@ use App\Http\Resources\CategoryResource;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Str;
+use Knuckles\Scribe\Attributes\Endpoint;
+use Knuckles\Scribe\Attributes\Group;
+use Knuckles\Scribe\Attributes\QueryParam;
 
- 
+/**
+ * @group Categories
+ *
+ * Managing Categories
+ */
+#[Group('Categories', 'Managing Categories')]
 class CategoryController extends Controller
 {
+    /**
+    * @OA\Get(
+    *     path="/api/categories",
+    *     summary="Seznam kategorií",
+    *     tags={"Categories"},
+    *     @OA\Response(
+    *         response=200,
+    *         description="OK"
+    *     )
+    * )
+    */
+    #[Endpoint('Get Categories', <<<DESC
+        Getting the list of the categories
+    DESC)]
+    #[QueryParam('page', 'int', 'Which page to show.', example: 12)]
     public function index()
-    {
-        $categories = Category::paginate(10); // nebo libovolný počet na stránku
-        return CategoryResource::collection($categories);
+    { 
+        return CategoryResource::collection(Category::all());
     }
 
     public function show(Category $category) 
-    {
-        return new CategoryResource($category);
+    { 
+        return new CategoryResource($category);   
     } 
 
     public function list()
